@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>site</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+  </head>
+  <body>
+    <a href="/index.html">back</a>
+    <h1><div id="name"></div></h1>
+    
+    <a href="" id="url_link"><div id="url"></div></a>
+    <p>
+    <table>
+      <tr>
+	<td>uptime:</td><td>hour</td><td>day</td><td>week</td><td>30 day</td><td>90 day</td>
+      </tr>
+      <tr>
+	<td></td>
+	<td><div id="hour"></div></td>
+	<td><div id="day"></div></td>
+	<td><div id="week"></div></td>
+	<td><div id="30_day"></div></td>
+	<td><div id="90_day"></div></td>
+      </tr>
+    </table>
+    <p>
+    <table>
+      <tr>
+	<td>last change</td><td><div id="last_change"></div></td>
+      </tr>
+      <tr>
+	<td>last up</td><td><div id="last_up"></div></td>
+      </tr>
+      <tr>
+	<td>last down</td><td><div id="last_down"></div></td>
+      </tr>
+    </table>
+    <p>
+      [ <a id="show_downtime">show downtime</a> |
+      <a id="show_changes_filtered">show changes (filtered)</a> |
+      <a id="show_changes_unfiltered">show changes (unfiltered)</a> |
+      <a id="show_checks">show all checks</a>
+      ]
+    <div id="content"></div>
+    <table id="table" class="display"></table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="site.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>  </head>
+
+</body>
+</html>

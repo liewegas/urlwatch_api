@@ -1,0 +1,211 @@
+<h1>API</h1>
+
+Notes
+<ul>
+  <li>timestamps are seconds since epoch</li>
+  <li>uptime is float between 0 and 1</li>
+</ul>
+
+<h2>GET /api/sites/</h2>
+
+Fetch site list
+
+<pre>
+{
+  "sites": [
+    {
+      "guid": "277545e04df47bb5398e63691d18f4b48251e898",
+      "name": "LA/pp",
+      "url": "https://voterportal.sos.la.gov/",
+      "uptime_hour": 1,
+      "uptime_day": 1,
+      "uptime_week": 1,
+      "uptime_30": 1,
+      "uptime_90": 1,
+      "last_change": 1586783279,
+      "last_up": 1586789175,
+      "last_down": null,
+      "last_check": 1586789175
+    },
+...
+  ]
+}
+</pre>
+
+<h2>GET /api/sites/${GUID}</h2>
+
+Fetch information about a single site
+
+<pre>
+{
+  "guid": "277545e04df47bb5398e63691d18f4b48251e898",
+  "name": "LA/pp",
+  "url": "https://voterportal.sos.la.gov/",
+  "uptime_hour": 1,
+  "uptime_day": 1,
+  "uptime_week": 1,
+  "uptime_30": 1,
+  "uptime_90": 1,
+  "last_change": 1586783279,
+  "last_up": 1586789175,
+  "last_down": null,
+  "last_check": 1586789175
+}
+</pre>
+
+
+<h2>GET /api/sites/${GUID}/checks/</h2>
+Return all checks
+
+<ul>
+  <li>data and data_unfiltered are hashes (sha1) of page content</li>
+  <li>tries > 0 means the site is down for the last N checks</li>
+</ul>
+
+<pre>
+[
+  {
+    "id": 17,
+    "guid": "277545e04df47bb5398e63691d18f4b48251e898",
+    "data": "bcc336320e86bbb1c7adf6b68152c464b14a1886",
+    "data_unfiltered": "980d68505b98d70a005f955432658e5dee35d75f",
+    "tries": 0,
+    "etag": null,
+    "timestamp": 1586465275
+  },
+...
+]
+</pre>
+
+<h2>GET /api/sites/${GUID}/downtime/</h2>
+Return intervals of downtime
+
+<pre>
+[
+  {
+    "start": 1586584440,
+    "end": 1586590549,
+    "duration": 6109
+  },
+  {
+    "start": 1586670955,
+    "end": 1586677300,
+    "duration": 6345
+  },
+  {
+    "start": 1586757208,
+    "end": 1586763563,
+    "duration": 6355
+  }
+]
+</pre>
+
+
+<h2>GET /api/sites/${GUID}/get-changes-filtered</h2>
+List checks in which (filtered) page content changed
+
+<ul>
+  <li>will always return at least one entry (the first)</li>
+</ul>
+
+<pre>
+[
+  {
+    "id": 1,
+    "guid": "1a3c4b31cf50a961ec88d7108b167b5d367a20b7",
+    "data": "54d604bd3ce671f4153ee4e00e4f37f31f045efd",
+    "data_unfiltered": "f29d27db941dbfb999ed5f06363d1640161868c1",
+    "tries": 0,
+    "etag": null,
+    "timestamp": 1586465275
+  },
+  {
+    "id": 37913,
+    "guid": "1a3c4b31cf50a961ec88d7108b167b5d367a20b7",
+    "data": "ff7fceeb0d1ec27f6814e63da66dfe9efd627b7d",
+    "data_unfiltered": "df998f05400d8f64eef87ba7bfd141f5dcf90711",
+    "tries": 0,
+    "etag": null,
+    "timestamp": 1586732053
+  },
+  {
+    "id": 38002,
+    "guid": "1a3c4b31cf50a961ec88d7108b167b5d367a20b7",
+    "data": "54d604bd3ce671f4153ee4e00e4f37f31f045efd",
+    "data_unfiltered": "f29d27db941dbfb999ed5f06363d1640161868c1",
+    "tries": 0,
+    "etag": null,
+    "timestamp": 1586732692
+  }
+]
+</pre>
+  
+<h2>GET /api/sites/${GUID}/get-changes-unfiltered</h2>
+List checks in which (unfiltered) page content changed
+
+<ul>
+  <li>will always return at least one entry (the first)</li>
+</ul>
+
+<pre>
+[
+  {
+    "id": 1,
+    "guid": "1a3c4b31cf50a961ec88d7108b167b5d367a20b7",
+    "data": "54d604bd3ce671f4153ee4e00e4f37f31f045efd",
+    "data_unfiltered": "f29d27db941dbfb999ed5f06363d1640161868c1",
+    "tries": 0,
+    "etag": null,
+    "timestamp": 1586465275
+  },
+  {
+    "id": 37913,
+    "guid": "1a3c4b31cf50a961ec88d7108b167b5d367a20b7",
+    "data": "ff7fceeb0d1ec27f6814e63da66dfe9efd627b7d",
+    "data_unfiltered": "df998f05400d8f64eef87ba7bfd141f5dcf90711",
+    "tries": 0,
+    "etag": null,
+    "timestamp": 1586732053
+  },
+  {
+    "id": 38002,
+    "guid": "1a3c4b31cf50a961ec88d7108b167b5d367a20b7",
+    "data": "54d604bd3ce671f4153ee4e00e4f37f31f045efd",
+    "data_unfiltered": "f29d27db941dbfb999ed5f06363d1640161868c1",
+    "tries": 0,
+    "etag": null,
+    "timestamp": 1586732692
+  }
+]
+</pre>
+  
+
+<h2>GET /api/sites/${GUID}/${CHECK_ID}</h2>
+
+Get information about a specific site check
+
+<pre>
+{
+  "id": 38002,
+  "guid": "1a3c4b31cf50a961ec88d7108b167b5d367a20b7",
+  "data": "54d604bd3ce671f4153ee4e00e4f37f31f045efd",
+  "data_unfiltered": "f29d27db941dbfb999ed5f06363d1640161868c1",
+  "tries": 0,
+  "etag": null,
+  "timestamp": 1586732692
+}
+</pre>
+
+
+<h2>GET /api/blob/${HASH}</h2>
+
+Return content by hash
+
+<ul>
+  <li>hash is the value of the data or data_unfiltered fields</li>
+</ul>
+
+
+<h2>GET /api/blob-diff/${HASH1}/${HASH2}</h2>
+
+Get diff -u output between two hashes.

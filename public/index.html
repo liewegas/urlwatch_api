@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>states</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+  </head>
+  <body>
+     
+    <div id="root"></div>
+    <table id="state_table" class="display"></table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+function nice_time(t) {
+    if (!t) { return ''; }
+    return new Date(t*1000).toISOString();
+}
+
+const app = document.getElementById('root');
+
+const container = document.createElement('div');
+container.setAttribute('class', 'container');
+
+app.appendChild(container);
+
+function pc(f) {
+    return (f * 100).toFixed(4)
+}
+
+var request = new XMLHttpRequest()
+request.open('GET', `http://${window.location.host}/api/sites/`)
+request.onload = function() {
+    var data = JSON.parse(this.response);
+    var tabledata = [];
+    data['sites'].forEach(site => {
+	tabledata.push([`<a href="site.html?site=${site['guid']}">${site['name']}</a>`,
+			pc(site['uptime_hour']),
+			pc(site['uptime_day']),
+			pc(site['uptime_week']),
+			pc(site['uptime_30']),
+			pc(site['uptime_90']),
+			nice_time(site['last_change']),
+			nice_time(site['last_up']),
+			nice_time(site['last_down']),
+			`<a href="${site['url']}">${site['url']}</a>`,])
+    })
+    
+    const h1 = document.createElement('h1');
+    h1.textContent = 'Sites';
+    container.appendChild(h1);
+    
+    $(document).ready(function() {
+	$('#state_table').DataTable( {
+	    data: tabledata,
+	    columns: [
+		{ title: "name" },
+		{ title: "hour" },
+		{ title: "day" },
+		{ title: "week" },
+		{ title: "30 day" },
+		{ title: "90 day" },
+		{ title: "last change" },
+		{ title: "last up" },
+		{ title: "last down" },
+		{ title: "url" }
+	    ],
+	    pageLength: 500
+	} );
+    } );
+    
+}
+request.send()
+
+
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>  </head>
+
+    <p>[ <a href="api.html">API documentation</a> ]</p>
+
+</body>
+</html>
