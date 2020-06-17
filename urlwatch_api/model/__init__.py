@@ -55,6 +55,8 @@ class SiteCheck(Base):
     data_unfiltered = Column(String)
     tries = Column(Integer)
     etag = Column(String)
+    error = Column(String)
+    proxy = Column(String)
 
 class Blob(Base):
     __tablename__ = 'blob'

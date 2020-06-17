@@ -7,7 +7,8 @@ import subprocess
 
 class CheckController(object):
     def __init__(self, row):
-        for c in ['id', 'guid', 'data', 'data_unfiltered', 'tries', 'etag']:
+        for c in ['id', 'guid', 'data', 'data_unfiltered', 'tries', 'etag',
+                  'error', 'proxy']:
             setattr(self, c, getattr(row, c))
         for c in ['timestamp']:
             v = getattr(row, c)
@@ -54,17 +55,20 @@ class SiteController(object):
     def downtime(self):
         r = []
         start = None
+        error = None
         for row in model.Session.query(model.SiteCheck).filter_by(guid=self.guid).order_by(model.SiteCheck.timestamp):
             c = CheckController(row)
             if c.tries > 0:
                 if start is None:
                     start = c.timestamp
+                    error = c.error
             else:
                 if start:
                     r.append({
                         'start': start,
                         'end': c.timestamp,
                         'duration': c.timestamp - start,
+                        'error': error,
                     })
                     start = None
         return r
